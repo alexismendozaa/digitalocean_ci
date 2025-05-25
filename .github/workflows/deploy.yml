@@ -1,0 +1,29 @@
+name: Deploy static website to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main  # Cambia esta rama si usas otra rama para hacer deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Add DigitalOcean to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.DIGITALOCEAN_IP }} >> ~/.ssh/known_hosts
+
+    - name: Deploy index.html to DigitalOcean
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.DIGITALOCEAN_IP }}
+        username: root
+        key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+        source: "index.html"
+        target: "/var/www/html/index.html"
+

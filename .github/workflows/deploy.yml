@@ -3,7 +3,7 @@ name: Deploy static website to DigitalOcean
 on:
   push:
     branches:
-      - main  # Cambia esta rama si usas otra rama para hacer deploy
+      - main 
 
 jobs:
   deploy:
